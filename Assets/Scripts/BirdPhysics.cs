@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BirdPhysics : MonoBehaviour
 {
@@ -26,5 +27,9 @@ public class BirdPhysics : MonoBehaviour
             //Flap cap amunt
             birdBody.AddForce(Vector2.up * force);
         }
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
