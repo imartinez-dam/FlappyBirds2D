@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 4184683143949696318}
   - component: {fileID: 4126416363460557571}
   - component: {fileID: 5659616911509810490}
-  - component: {fileID: 8178004143169753791}
   - component: {fileID: 7827561477642193186}
+  - component: {fileID: -9001019253651393602}
   m_Layer: 0
   m_Name: Dragon
   m_TagString: Untagged
@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 14, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -116,8 +116,22 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!61 &8178004143169753791
-BoxCollider2D:
+--- !u!114 &7827561477642193186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3908404931424530586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f382de777c3817a47b1b91765ac50cb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  activationDistance: 6
+  speed: 2
+--- !u!70 &-9001019253651393602
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -150,29 +164,6 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.12957278, y: -0.014869034}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2, y: 1}
-    newSize: {x: 2, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 1.6983716, y: 0.67288196}
-  m_EdgeRadius: 0
---- !u!114 &7827561477642193186
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3908404931424530586}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f382de777c3817a47b1b91765ac50cb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  activationDistance: 6
-  speed: 2
+  m_Offset: {x: 0.1304679, y: -0.002038882}
+  m_Size: {x: 1.6819966, y: 0.5963824}
+  m_Direction: 1
