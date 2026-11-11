@@ -14,7 +14,7 @@ public class CameraScript : MonoBehaviour
     {
         transform.position = new Vector3(targetBird.position.x,
                                             transform.position.y,
-                                            transform.position.z);  
+                                            transform.position.z);
     }
 
     // Update is called once per frame
