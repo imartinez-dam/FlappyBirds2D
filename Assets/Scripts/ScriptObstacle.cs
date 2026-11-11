@@ -19,12 +19,6 @@ public class ScriptObstacle : MonoBehaviour
 
         InvokeRepeating("Reverse", timeBetweenReverse, timeBetweenReverse);
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     void Reverse()
     {
         // Invertim la direcció de la velocitat. És com canviar de sentit
