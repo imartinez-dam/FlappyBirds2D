@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -8,19 +9,22 @@ public class PlayerHealth : MonoBehaviour
 
     int currentHealth;
 
+    [SerializeField]
+    TMP_Text healthText;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         currentHealth = maxHealth;
-        Debug.Log($"Vides: {currentHealth}");
+        healthText.text = $"Vides: {currentHealth}";
     }
 
     public void TakeDamage()
     {
         currentHealth--;
-        Debug.Log($"Vides restants: {currentHealth}");
+        healthText.text = $"Vides: {currentHealth}";
 
-        if(currentHealth <= 0)
+        if (currentHealth <= 0)
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
