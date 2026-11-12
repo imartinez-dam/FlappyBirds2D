@@ -29,4 +29,16 @@ public class PlayerHealth : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
+
+    public bool Heal()
+    {
+        if(currentHealth < maxHealth)
+        {
+            currentHealth++;
+            healthText.text = $"Vides: {currentHealth}";
+            return true;
+        }
+        else
+        { return false; }
+    }
 }
