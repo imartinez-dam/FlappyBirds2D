@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4946799387435785287}
   - component: {fileID: 7397340145581890992}
   - component: {fileID: 8124678191635013551}
+  - component: {fileID: -6711044507604754351}
   m_Layer: 6
   m_Name: obstacle_0
   m_TagString: Untagged
@@ -181,3 +182,15 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &-6711044507604754351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7894762327446451097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0aa59b8e4b969d469140b93492a3b14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CleanupTarget
