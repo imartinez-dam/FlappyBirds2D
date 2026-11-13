@@ -24,4 +24,16 @@ public class ScriptObstacle : MonoBehaviour
         // Invertim la direcció de la velocitat. És com canviar de sentit
         obstacleBody.linearVelocity *= -1;
     }
+
+    public void SetDirection(bool isUpper)
+    {
+        if(isUpper)
+        {
+            speed = Mathf.Abs(speed) * -1; // Agafa el valor absolut per fer-lo sempre negatiu
+        }
+        else
+        {
+            speed = Mathf.Abs(speed);   // Agafa el valor absolut que sempre és positiu
+        }
+    }
 }
