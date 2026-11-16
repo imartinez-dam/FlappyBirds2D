@@ -10,6 +10,9 @@ public class ScriptObstacle : MonoBehaviour
 
     Rigidbody2D obstacleBody;
 
+    ObstacleCounter obstacleCounter;
+    bool counted = false;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -18,6 +21,8 @@ public class ScriptObstacle : MonoBehaviour
         obstacleBody.linearVelocity = Vector2.up * speed;
 
         InvokeRepeating("Reverse", timeBetweenReverse, timeBetweenReverse);
+
+        obstacleCounter = FindFirstObjectByType<ObstacleCounter>();
     }
     void Reverse()
     {
@@ -35,6 +40,14 @@ public class ScriptObstacle : MonoBehaviour
         else
         {
             speed = Mathf.Abs(speed);   // Agafa el valor absolut que sempre és positiu
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(!counted && collision.CompareTag("Player"))
+        {
+            counted = true;
+            obstacleCounter.AddObstacle();
         }
     }
 }

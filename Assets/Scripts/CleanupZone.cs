@@ -2,15 +2,15 @@ using UnityEngine;
 
 public class CleanupZone : MonoBehaviour
 {
-    CleanupTarget cleanupTarget;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        cleanupTarget = collision.GetComponent<CleanupTarget>();
-
-        if(cleanupTarget)
+        if (collision.CompareTag("coin") ||
+            collision.CompareTag("peach") ||
+            collision.CompareTag("dragon") ||
+            collision.CompareTag("obstacle"))
         {
-            Destroy(cleanupTarget.gameObject);
+            Destroy(collision.gameObject);
         }
     }
 }

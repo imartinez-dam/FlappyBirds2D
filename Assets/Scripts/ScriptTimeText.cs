@@ -18,4 +18,6 @@ public class ScriptTimeText : MonoBehaviour
 
         timeText.text = $"Temps: {minuts:00}:{segons:00}";
     }
+
+    public float ElapsedTime { get => elapsedTime; }
 }

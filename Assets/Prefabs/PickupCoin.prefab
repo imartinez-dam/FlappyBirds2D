@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6451538228603248956}
   - component: {fileID: 2420365700017493444}
   - component: {fileID: 5348586233580900525}
-  - component: {fileID: 910803772070143397}
   - component: {fileID: -2411107035951847404}
   m_Layer: 0
   m_Name: PickupCoin
@@ -130,18 +129,6 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: -0.011376679}
   m_Radius: 0.36144924
---- !u!114 &910803772070143397
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3799046047041508895}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0aa59b8e4b969d469140b93492a3b14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CleanupTarget
 --- !u!114 &-2411107035951847404
 MonoBehaviour:
   m_ObjectHideFlags: 0

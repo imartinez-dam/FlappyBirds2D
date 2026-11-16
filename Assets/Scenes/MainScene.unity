@@ -1805,6 +1805,7 @@ MonoBehaviour:
   startPanel: {fileID: 1587221693}
   playButton: {fileID: 405293507}
   exitButton: {fileID: 1301919379}
+  resultsText: {fileID: 2049614603}
 --- !u!4 &673627031
 Transform:
   m_ObjectHideFlags: 0
@@ -3628,7 +3629,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1789772422
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3749,9 +3750,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Monedes: 0
 
-    Obstacles: 0
+    Obstacles superats: 0
 
-    Temps: 0.0 s'
+    Temps: 00:00'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

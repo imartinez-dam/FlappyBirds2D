@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 8999085166541204747}
   - component: {fileID: 575053946323260992}
   - component: {fileID: 1165391866595683841}
-  - component: {fileID: -681778179495034766}
   - component: {fileID: 521090773517249925}
   m_Layer: 0
   m_Name: HealthPeach
@@ -130,18 +129,6 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0.002271235, y: 0.0090864}
   m_Radius: 0.37960583
---- !u!114 &-681778179495034766
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4000860421333215164}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0aa59b8e4b969d469140b93492a3b14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CleanupTarget
 --- !u!114 &521090773517249925
 MonoBehaviour:
   m_ObjectHideFlags: 0

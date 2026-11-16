@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -29,6 +30,9 @@ public class GameManager : MonoBehaviour
 
     private bool isWaitingToStart = false;
 
+    [SerializeField]
+    TMP_Text resultsText;
+
     private AudioSource audioSource;
 
     void Awake()
@@ -51,6 +55,8 @@ public class GameManager : MonoBehaviour
             instance.startPanel = startPanel;
             startPanel.SetActive(instance.isWaitingToStart);
 
+            instance.resultsText = resultsText;
+
             Destroy(gameObject);
         }
 
@@ -69,6 +75,18 @@ public class GameManager : MonoBehaviour
         }
 
         isGameOver = true;
+
+        ScoreManager scoreManager = FindFirstObjectByType<ScoreManager>();
+        ObstacleCounter obstacleCounter = FindFirstObjectByType<ObstacleCounter>();
+        ScriptTimeText timeCounter = FindFirstObjectByType<ScriptTimeText>();
+
+        int minuts = Mathf.FloorToInt(timeCounter.ElapsedTime / 60f);
+        int segons = Mathf.FloorToInt(timeCounter.ElapsedTime % 60f);
+
+        resultsText.text = $"Monedes: {scoreManager.Score}\n" +
+                            $"Obstacles superats: {obstacleCounter.ObstaclesPassed}\n" +
+                            $"Temps: {minuts:00}:{segons:00}";
+
         gameOverPanel.SetActive(true);
         audioSource.Play();
         Time.timeScale = 0f;

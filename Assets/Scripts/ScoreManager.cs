@@ -17,6 +17,8 @@ public class ScoreManager : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
+    public int Score { get => score; }
+
     public void AddPoint()
     {
         score++;

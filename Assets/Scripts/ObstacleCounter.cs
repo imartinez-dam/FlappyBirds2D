@@ -14,6 +14,8 @@ public class ObstacleCounter : MonoBehaviour
         obstaclesText.text = $"Obstacles: {obstaclesPassed}";
     }
 
+    public int ObstaclesPassed { get => obstaclesPassed; }
+
     public void AddObstacle()
     {
         obstaclesPassed++;

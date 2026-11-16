@@ -8,7 +8,6 @@ TagManager:
   - coin
   - peach
   - dragon
-  - trigger_obstacle
   layers:
   - Default
   - TransparentFX

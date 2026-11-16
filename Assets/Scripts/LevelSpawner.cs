@@ -16,9 +16,6 @@ public class LevelSpawner : MonoBehaviour
     [SerializeField]
     GameObject obstaclePrefab;
 
-    [SerializeField]
-    GameObject obstacleTriggerPrefab;
-
     // Variables per controlar posicions
 
     [SerializeField]
@@ -149,7 +146,6 @@ public class LevelSpawner : MonoBehaviour
             }
 
             Vector3 obstaclePosicio = new Vector3(nextObstacleSpawnX, obstacleY, 0);
-            Vector3 triggerPosicio = new Vector3(nextObstacleSpawnX + 1, 0, 0);
 
             // Crea l'obstacle i el guarda una referència en una instància
             GameObject nouObstacle = Instantiate(obstaclePrefab, obstaclePosicio, Quaternion.identity);
@@ -157,8 +153,6 @@ public class LevelSpawner : MonoBehaviour
             ScriptObstacle obstacleScript = nouObstacle.GetComponent<ScriptObstacle>();
             // Crida el mètode SetDirection amb la decisió presa amb isUpper
             obstacleScript.SetDirection(isUpper);
-
-            Instantiate(obstacleTriggerPrefab, triggerPosicio, Quaternion.identity);
 
             nextObstacleSpawnX += Random.Range(minObstacleSpacing, maxObstacleSpacing);
         }
