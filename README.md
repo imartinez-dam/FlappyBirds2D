@@ -1,156 +1,136 @@
 # FlappyBird2D
 
-Videojoc 2D desenvolupat amb **Unity 6000.3.24f1**. El jugador controla un ocell que avança automàticament, esquiva obstacles mòbils, recull monedes i s'enfronta a dracs xinesos.
+Videojoc 2D desenvolupat amb **Unity 6000.3.24f1**. Controla un ocell, esquiva obstacles mòbils i dracs xinesos, recull monedes i recupera vida amb préssecs màgics en un recorregut infinit.
 
-## Com executar el projecte
+## Jugar al navegador
+
+**[Obre el joc a GitHub Pages](https://imartinez-dam.github.io/FlappyBirds2D/)**
+
+Prem **Jugar** a la pantalla inicial per començar. Si el teclat no respon, fes clic dins de la zona del joc per donar-li el focus.
+
+## Instruccions del joc
+
+### Controls
+
+| Acció | Control |
+|---|---|
+| Aletejar i pujar | Clic esquerre, fletxa amunt o **W** |
+| Accelerar cap a la dreta | Mantenir fletxa dreta o **D** |
+| Frenar | Mantenir fletxa esquerra o **A** |
+| Caure | Deixar actuar la gravetat; no cal prémer cap tecla |
+
+Cada pulsació d'aleteig aplica un impuls cap amunt; mantenir la tecla premuda no produeix aleteigs continus. L'ocell avança automàticament: amb la configuració actual, la velocitat és de **2 unitats/segon**, augmenta a **4** en accelerar i baixa a **0** en frenar. Si prems les dues direccions alhora, es manté l'avanç normal.
+
+### Objectiu i elements
+
+Intenta sobreviure tant com puguis, recollir monedes i superar obstacles:
+
+- **Moneda daurada:** suma **1 punt** i desapareix en recollir-la.
+- **Préssec màgic:** recupera **1 vida**, fins al màxim de **3**. Si ja tens la vida completa, no es consumeix.
+- **Obstacles de fusta:** es mouen verticalment. Tocar-ne un acaba la partida immediatament, encara que quedin vides.
+- **Dracs:** comencen a volar cap a l'esquerra quan t'apropes. Cada entrada en contacte resta **1 vida**. El foc és decoratiu.
+- **Terra i sostre:** tocar-los també acaba la partida immediatament.
+
+Comences amb **3 vides**. Mantenir-te solapat amb un drac no resta vida contínuament, però separar-te i tornar-lo a tocar pot provocar un altre dany. Quan les vides arriben a zero, apareix el Game Over.
+
+Els marcadors mostren les monedes, els obstacles superats, la vida restant i el temps en format **minuts:segons**.
+
+### Menús
+
+- **Jugar:** inicia una partida nova.
+- **Game Over:** pausa la partida i mostra monedes, obstacles superats i temps final.
+- **Reiniciar:** comença una partida nova directament, amb els comptadors a zero i les tres vides recuperades.
+- **Sortir:** torna a la pantalla inicial amb el joc aturat; no tanca la pestanya del navegador.
+
+Els controls de l'ocell i la rotació de les monedes queden bloquejats durant els menús.
+
+## Executar el projecte a Unity
 
 1. Clona el repositori.
-2. Afegeix la carpeta del projecte a Unity Hub i obre-la amb la versió indicada de Unity.
+2. Afegeix la carpeta del projecte a Unity Hub i obre-la amb **Unity 6000.3.24f1**.
 3. Obre `Assets/Scenes/MainScene.unity`.
-4. Prem **Play**.
+4. Prem **Play** a Unity i després **Jugar** al menú del joc.
 
-**Control:** clic esquerre del ratolí per impulsar l'ocell cap amunt.
+## Funcionalitats i implementació
 
-## Funcionalitats implementades
+### Ocell i càmera
 
-### Moviment de l'ocell i càmera
+`BirdPhysics.cs` gestiona els controls, el moviment amb `Rigidbody2D`, la vida, la curació i les peticions de Game Over. L'entrada horitzontal es llegeix a `Update()` i s'aplica a `FixedUpdate()`, conservant la velocitat vertical. `CameraScript.cs` segueix l'ocell horitzontalment a `LateUpdate()`.
 
-- L'ocell avança automàticament cap a la dreta amb `Rigidbody2D.linearVelocity`.
-- Cada clic aplica una força vertical amb `AddForce`.
-- La càmera segueix la posició horitzontal de l'ocell a `LateUpdate()`, mantenint l'altura i la profunditat.
-- Tocar el terra, el sostre o un obstacle reinicia immediatament l'escena.
+### Recorregut infinit i generació
 
-**Scripts:** `BirdPhysics.cs` i `CameraScript.cs`.
+- `LoopingGround.cs` recicla dos trams de terra i dos de sostre quan queden completament fora de la vista per l'esquerra.
+- `LevelSpawner.cs` genera recompenses, dracs i obstacles davant de la càmera, amb altures i separacions aleatòries dins de límits configurats.
+- Monedes i préssecs comparteixen una seqüència de generació; la probabilitat inicial de préssec és del **15 %**. Dracs i obstacles tenen seqüències independents.
+- Els obstacles es generen aleatòriament com a superiors o inferiors, amb la direcció inicial corresponent.
+- `CleanupZone.cs`, en una zona trigger darrere de la càmera, elimina els objectes passats segons els tags `coin`, `peach`, `dragon` i `obstacle`. El terra i el sostre es reciclen, no es destrueixen.
 
-### Obstacles mòbils
+### Obstacles i recompte
 
-- Es desplacen verticalment amb un `Rigidbody2D` sense gravetat.
-- `InvokeRepeating` inverteix la velocitat després d'un interval configurable.
-- Cada instància pot tenir velocitat, direcció inicial i interval diferents.
-- El terra, el sostre i els obstacles utilitzen la capa `GroundPhysics`, amb les col·lisions entre elements d'aquesta capa desactivades perquè no es frenin entre ells.
-- Es reutilitzen mitjançant el prefab `obstacle_0`.
+`ScriptObstacle.cs` mou els obstacles verticalment sense gravetat i inverteix periòdicament la velocitat. Els superiors tenen un interval inicial configurat d'un segon per limitar quant baixen.
 
-**Script:** `ScriptObstacle.cs`.
+Cada obstacle té **dos Box Collider 2D al mateix GameObject**: un físic i un trigger vertical amb offset X = 1 per comptar el pas. Un indicador intern impedeix comptar-lo més d'una vegada. `ObstacleCounter.cs` guarda el total i actualitza el marcador.
 
-### Temps transcorregut
+El terra, el sostre i els obstacles comparteixen la capa `GroundPhysics`, amb les col·lisions entre aquesta capa desactivades perquè no es frenin entre ells.
 
-- El cronòmetre acumula segons amb `Time.deltaTime`.
-- Un text TextMeshPro mostra el temps amb un decimal.
-- Es reinicia quan es recarrega l'escena.
+### Pickups i puntuació
 
-**Script:** `ScriptTimeText.cs`.
+`Pickups.cs` comparteix la lògica de monedes i préssecs, diferenciats pels tags `coin` i `peach`. Identifica l'ocell amb el tag `Player` i consulta `BirdPhysics` per aplicar la curació.
 
-### Monedes i puntuació
+La rotació és opcional per prefab, utilitza `Time.deltaTime` i només s'executa durant la partida. `ScoreManager.cs` guarda la puntuació, actualitza el text i reprodueix el so de recollida des d'un objecte que no es destrueix amb la moneda.
 
-- Sprite de moneda amb transparència i rotació visual sobre l'eix Y.
-- Un `CircleCollider2D` amb `Is Trigger` detecta la recollida sense bloquejar l'ocell.
-- La moneda identifica el jugador mitjançant el component `BirdPhysics`.
-- Cada moneda crida `ScoreManager.AddPoint()`, suma **1 punt** i es destrueix.
-- La puntuació es mostra amb TextMeshPro.
-- Cada moneda localitza el gestor amb `FindFirstObjectByType`.
-- El prefab `PickupCoin` permet distribuir monedes pel nivell.
+### Dracs i animació
 
-**Scripts:** `CoinScript.cs` i `ScoreManager.cs`.
+`DragonEnemy.cs` troba el jugador, s'activa per proximitat i continua volant cap a l'esquerra. La configuració del prefab utilitza una distància d'activació de **6 unitats**, velocitat de **2 unitats/segon**, escala **(1.5, 1.5, 1)** i un `CapsuleCollider2D` horitzontal amb `Is Trigger`.
 
-### Comptador d'obstacles superats
+`DragonFly.anim` reprodueix una spritesheet de sis fotogrames a **8 FPS**, en bucle mitjançant un Animator Controller.
 
-- Un trigger vertical independent se situa darrere de cada obstacle, a la seva posició **X + 1**.
-- Quan l'ocell el travessa, incrementa el recompte i destrueix el trigger.
-- El total es mostra amb TextMeshPro i és independent de la puntuació de les monedes.
-- Comptem cada obstacle individualment, no per parelles.
-- El prefab `ObstaclePassTrigger` permet reutilitzar la configuració.
+### Temps, menús i resultats
 
-**Scripts:** `ObstacleCounter.cs` i `ObstaclePassTrigger.cs`.
+`ScriptTimeText.cs` acumula temps amb `Time.deltaTime` i el mostra en minuts i segons. `GameManager.cs` gestiona els estats de partida, els panells i els botons. La pausa utilitza `Time.timeScale = 0`, juntament amb el bloqueig explícit dels controls.
 
-### Enemics: dracs xinesos
+El gestor persisteix entre recàrregues amb `DontDestroyOnLoad`, elimina duplicats i reconnecta les referències de la interfície de cada escena. En morir, consulta els comptadors actuals per omplir el resum del Game Over. Actualment, vida, puntuació i temps es reinicialitzen amb els components de l'escena en començar una partida nova.
 
-- Spritesheet de sis poses amb foc decoratiu, importada com a sprite `Multiple` i dividida en sis columnes i una fila.
-- Animació `DragonFly.anim` de sis fotogrames a **8 FPS**, amb reproducció en bucle mitjançant un Animator Controller.
-- Cada drac troba automàticament l'ocell a través del component `BirdPhysics`.
-- S'activa quan el jugador és a **6 unitats** i continua volant cap a l'esquerra a **2 unitats per segon**.
-- El desplaçament utilitza `Time.deltaTime` perquè sigui independent dels FPS.
-- El prefab `Dragon` té una escala de **(1.5, 1.5, 1)** i un `CapsuleCollider2D` horitzontal amb `Is Trigger`.
-- Hi ha tres instàncies de drac per poder provar el sistema de vida.
+### So
 
-**Script:** `DragonEnemy.cs`.
+Els efectes es reprodueixen amb `AudioSource.Play()`:
 
-### Vida del jugador
-
-- L'ocell comença amb **3 vides**.
-- Quan el drac detecta el component `PlayerHealth`, crida `TakeDamage()` i resta una vida.
-- El contacte es detecta amb `OnTriggerEnter2D`: mantenir-se solapats no resta vida contínuament. Separar-se i tornar a entrar pot provocar un altre dany.
-- La vida restant es mostra al marcador `HealthText` amb TextMeshPro.
-- Quan la vida arriba a zero, es recarrega l'escena i es recuperen les tres vides.
-
-**Script:** `PlayerHealth.cs`.
-
-> Els dracs resten vida; els obstacles, el terra i el sostre continuen provocant un reinici immediat, independentment de les vides restants. El foc del drac és només decoratiu.
+- `flap.mp3`: aleteig, des de l'ocell.
+- `coin.mp3`: recollida, des del gestor de puntuació.
+- `gameOver.mp3`: derrota, des del gestor de partida.
 
 ## Organització del projecte
 
 ```text
 Assets/
 ├── Animations/   # Animacions i controladors Animator
-├── Prefabs/      # Obstacles, monedes, triggers i dracs reutilitzables
+├── Prefabs/      # Obstacles, monedes, préssecs i dracs reutilitzables
 ├── Scenes/       # MainScene.unity
-├── Scripts/      # Lògica del joc i dels marcadors
+├── Scripts/      # Lògica del joc, generació, neteja i interfície
+├── Sounds/       # Efectes d'àudio
 └── Sprites/      # Recursos gràfics
+docs/            # Build Web publicat a GitHub Pages
 ```
 
-Els prefabs comparteixen configuració entre instàncies. Els canvis locals de cada instància es conserven com a *overrides*. Els sprites de la moneda i del drac s'han generat amb assistència d'IA i s'han configurat a Unity.
+Els prefabs comparteixen configuració entre instàncies. Els sprites de la moneda, el préssec i el drac s'han generat amb assistència d'IA i s'han configurat a Unity.
+
+## Publicació Web
+
+El build es genera des de **File → Build Profiles → Web**, amb `MainScene` inclosa. Per a la publicació actual a GitHub Pages, s'utilitza **Compression Format → Disabled**.
+
+El contingut complet del build es publica a `docs`, amb `index.html` directament dins d'aquesta carpeta i un fitxer `.nojekyll`. GitHub Pages es configura per publicar la carpeta `/docs` de la branca corresponent.
+
+Per provar un build localment, utilitza **Build And Run**, no obris `index.html` directament des del sistema de fitxers. Si després d'actualitzar Pages es carrega una versió antiga o apareixen errors, comprova que el desplegament hagi acabat i prova una finestra privada o esborra les dades del lloc.
 
 ## Comprovacions realitzades
 
-- Recollir diverses monedes incrementa la puntuació d'una en una.
-- Els obstacles no recullen monedes quan les travessen.
-- Cada trigger d'obstacle incrementa el recompte i desapareix.
-- Els dracs s'activen per proximitat i es mouen cap a l'esquerra.
-- Tres contactes amb dracs redueixen la vida de 3 a 0 i reinicien la partida.
-- El solapament continu amb un drac no aplica dany repetidament.
-- En reiniciar, reapareixen els objectes de l'escena, els comptadors tornen a zero i es recuperen les tres vides.
-
-## TODO pendent
-
-### Game Over i gestió de partida
-
-- [ ] Implementar i revisar `GameManager.GameOver()`.
-- [ ] Substituir els reinicis immediats per la pantalla de Game Over.
-- [ ] Bloquejar controls i animacions que continuïn funcionant durant la pausa.
-- [ ] Connectar els botons **Reiniciar** i **Sortir**.
-- [ ] Crear una pantalla inicial amb **Jugar**; **Sortir** hi tornarà.
-- [ ] Mostrar els resultats de la partida al Game Over.
-- [ ] Revisar la persistència del `GameManager` i evitar duplicats.
-- [ ] Centralitzar-hi el temps de partida, definint quan es pausa i es reinicia.
-- [ ] Mostrar el temps en minuts i segons.
-
-### Simplificació i reutilització de scripts
-
-- [ ] Reduir el nombre de scripts agrupant comportaments similars.
-- [ ] Definir tags per identificar GameObjects i obtenir els components per cridar-ne els mètodes.
-- [ ] Unificar, si convé, moneda i préssec en un script de pickups.
-- [ ] Compartir moviment entre jugador i enemics, amb direcció configurable, mantenint separats els controls i l'activació per distància.
-- [ ] Mantenir la modificació de la vida encapsulada al jugador mitjançant `TakeDamage()` i `Heal()`; actualment ja es fa amb `PlayerHealth`.
-
-### Generació i dificultat
-
-- [ ] Evitar recompenses dins dels obstacles.
-- [ ] Evitar combinacions injustes de dracs i obstacles.
-- [ ] Ajustar freqüències, separacions i dificultat.
-- [ ] Donar als dracs un marge de generació propi si apareixen parcialment en pantalla.
-- [ ] Provar partides llargues per detectar acumulacions, buits o passos impossibles.
-
-### Millores tècniques opcionals
-
-- [ ] Fer la rotació de les monedes independent dels FPS amb `Time.deltaTime`.
-- [ ] Separar el sprite giratori de la moneda del seu collider.
-- [ ] Ajustar els triggers a **X + 1,2** si volem exigir que l'ocell hagi passat completament.
-- [ ] Validar referències, probabilitats i intervals de generació i moviment, evitant intervals iguals o inferiors a zero.
-- [ ] Valorar *object pooling* per reutilitzar objectes en lloc de crear-los i destruir-los.
-
-### Ja completat
-
-- [x] Terra i sostre reciclables.
-- [x] Neteja d'objectes amb trigger i `CleanupTarget`.
-- [x] Generació aleatòria de monedes, préssecs, dracs i obstacles amb triggers de recompte.
-- [x] Controls de teclat.
-- [x] Vida, curació i marcadors.
+- Controls de ratolí i teclat, acceleració i frenada.
+- Recollida de monedes amb puntuació i so.
+- Curació limitada a la vida màxima i conservació del préssec quan no cal curar.
+- Dany dels dracs, sense repetició contínua durant el solapament.
+- Obstacles superiors i inferiors, recompte únic i neteja posterior.
+- Reciclatge del terra i del sostre.
+- Rotació de monedes aturada durant els menús.
+- Menú inicial, Game Over, resultats i diversos reinicis consecutius.
+- Reinicialització dels comptadors i de la vida en una partida nova.
+- Prova completa després de les simplificacions dels scripts.
