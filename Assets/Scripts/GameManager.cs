@@ -29,12 +29,15 @@ public class GameManager : MonoBehaviour
 
     private bool isWaitingToStart = false;
 
+    private AudioSource audioSource;
+
     void Awake()
     {
         if (instance == null)
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
+            audioSource = GetComponent<AudioSource>();
             ReturnToStart();
         }
         // Si ja existeix un GameManager persistent, li passem el panell
@@ -67,6 +70,7 @@ public class GameManager : MonoBehaviour
 
         isGameOver = true;
         gameOverPanel.SetActive(true);
+        audioSource.Play();
         Time.timeScale = 0f;
     }
     public void RestartGame()

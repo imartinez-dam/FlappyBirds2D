@@ -30,6 +30,7 @@ public class ScriptObstacle : MonoBehaviour
         if(isUpper)
         {
             speed = Mathf.Abs(speed) * -1; // Agafa el valor absolut per fer-lo sempre negatiu
+            timeBetweenReverse = 1f;
         }
         else
         {

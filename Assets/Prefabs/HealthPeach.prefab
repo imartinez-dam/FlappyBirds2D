@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 8999085166541204747}
   - component: {fileID: 575053946323260992}
   - component: {fileID: 1165391866595683841}
-  - component: {fileID: 3976815596472456903}
   - component: {fileID: -681778179495034766}
+  - component: {fileID: 521090773517249925}
   m_Layer: 0
   m_Name: HealthPeach
-  m_TagString: Untagged
+  m_TagString: peach
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -130,18 +130,6 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0.002271235, y: 0.0090864}
   m_Radius: 0.37960583
---- !u!114 &3976815596472456903
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4000860421333215164}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b47e756e986dda46885535d4e756ff3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
 --- !u!114 &-681778179495034766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -154,3 +142,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0aa59b8e4b969d469140b93492a3b14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CleanupTarget
+--- !u!114 &521090773517249925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4000860421333215164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8b5e74fa75994944a25ddebc23b5f6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Pickups
+  rotate: 0
+  rotationSpeed: 12

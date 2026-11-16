@@ -25,6 +25,8 @@ public class BirdPhysics : MonoBehaviour
     [SerializeField]
     TMP_Text healthText;
 
+    private AudioSource audioSource;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -33,6 +35,8 @@ public class BirdPhysics : MonoBehaviour
 
         currentHealth = maxHealth;
         healthText.text = $"Vides: {currentHealth}";
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -50,6 +54,7 @@ public class BirdPhysics : MonoBehaviour
             {
                 //Flap cap amunt
                 birdBody.AddForce(Vector2.up * force);
+                audioSource.Play();
             }
 
             // Reinicia el moviment horitzontal a cada iteració
