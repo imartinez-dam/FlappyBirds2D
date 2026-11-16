@@ -109,11 +109,48 @@ Els prefabs comparteixen configuració entre instàncies. Els canvis locals de c
 - El solapament continu amb un drac no aplica dany repetidament.
 - En reiniciar, reapareixen els objectes de l'escena, els comptadors tornen a zero i es recuperen les tres vides.
 
-## TODO: millores opcionals
+## TODO pendent
+
+### Game Over i gestió de partida
+
+- [ ] Implementar i revisar `GameManager.GameOver()`.
+- [ ] Substituir els reinicis immediats per la pantalla de Game Over.
+- [ ] Bloquejar controls i animacions que continuïn funcionant durant la pausa.
+- [ ] Connectar els botons **Reiniciar** i **Sortir**.
+- [ ] Crear una pantalla inicial amb **Jugar**; **Sortir** hi tornarà.
+- [ ] Mostrar els resultats de la partida al Game Over.
+- [ ] Revisar la persistència del `GameManager` i evitar duplicats.
+- [ ] Centralitzar-hi el temps de partida, definint quan es pausa i es reinicia.
+- [ ] Mostrar el temps en minuts i segons.
+
+### Simplificació i reutilització de scripts
+
+- [ ] Reduir el nombre de scripts agrupant comportaments similars.
+- [ ] Definir tags per identificar GameObjects i obtenir els components per cridar-ne els mètodes.
+- [ ] Unificar, si convé, moneda i préssec en un script de pickups.
+- [ ] Compartir moviment entre jugador i enemics, amb direcció configurable, mantenint separats els controls i l'activació per distància.
+- [ ] Mantenir la modificació de la vida encapsulada al jugador mitjançant `TakeDamage()` i `Heal()`; actualment ja es fa amb `PlayerHealth`.
+
+### Generació i dificultat
+
+- [ ] Evitar recompenses dins dels obstacles.
+- [ ] Evitar combinacions injustes de dracs i obstacles.
+- [ ] Ajustar freqüències, separacions i dificultat.
+- [ ] Donar als dracs un marge de generació propi si apareixen parcialment en pantalla.
+- [ ] Provar partides llargues per detectar acumulacions, buits o passos impossibles.
+
+### Millores tècniques opcionals
 
 - [ ] Fer la rotació de les monedes independent dels FPS amb `Time.deltaTime`.
 - [ ] Separar el sprite giratori de la moneda del seu collider.
-- [ ] Ajustar els triggers a X + 1,2 si es vol comptar només quan l'ocell sencer hagi passat.
-- [ ] Validar les referències als components i gestors.
-- [ ] Evitar intervals d'inversió de moviment iguals o inferiors a zero.
-- [ ] Afegir una pantalla de Game Over amb els resultats abans de reiniciar.
+- [ ] Ajustar els triggers a **X + 1,2** si volem exigir que l'ocell hagi passat completament.
+- [ ] Validar referències, probabilitats i intervals de generació i moviment, evitant intervals iguals o inferiors a zero.
+- [ ] Valorar *object pooling* per reutilitzar objectes en lloc de crear-los i destruir-los.
+
+### Ja completat
+
+- [x] Terra i sostre reciclables.
+- [x] Neteja d'objectes amb trigger i `CleanupTarget`.
+- [x] Generació aleatòria de monedes, préssecs, dracs i obstacles amb triggers de recompte.
+- [x] Controls de teclat.
+- [x] Vida, curació i marcadors.

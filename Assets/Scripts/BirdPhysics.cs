@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using TMPro;
 
 public class BirdPhysics : MonoBehaviour
 {
@@ -17,32 +17,53 @@ public class BirdPhysics : MonoBehaviour
 
     Rigidbody2D birdBody;
 
+    [SerializeField]
+    int maxHealth = 3;
+
+    int currentHealth;
+
+    [SerializeField]
+    TMP_Text healthText;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         birdBody = GetComponent<Rigidbody2D>();
         birdBody.linearVelocity = Vector2.right * speed;
+
+        currentHealth = maxHealth;
+        healthText.text = $"Vides: {currentHealth}";
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+        // Bloqueja el moviment al menú inicial i a Game Over
+        if (!GameManager.instance.IsPlaying)
         {
-            //Flap cap amunt
-            birdBody.AddForce(Vector2.up * force);
+            horizontalInput = 0f;
         }
 
-        horizontalInput = 0;
-
-        if(Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
+        else
         {
-            horizontalInput++;
-        }
+            if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+            {
+                //Flap cap amunt
+                birdBody.AddForce(Vector2.up * force);
+            }
 
-        if(Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
-        {
-            horizontalInput--;
+            // Reinicia el moviment horitzontal a cada iteració
+            horizontalInput = 0;
+
+            if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
+            {
+                horizontalInput++;
+            }
+
+            if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
+            {
+                horizontalInput--;
+            }
         }
     }
     private void FixedUpdate()
@@ -51,8 +72,32 @@ public class BirdPhysics : MonoBehaviour
 
         birdBody.linearVelocity = new Vector2(horizontalSpeed, birdBody.linearVelocity.y);
     }
+
+    public void TakeDamage()
+    {
+        currentHealth--;
+        healthText.text = $"Vides: {currentHealth}";
+
+        if (currentHealth <= 0)
+        {
+            GameManager.instance.GameOver();
+        }
+    }
+
+    public bool Heal()
+    {
+        if (currentHealth < maxHealth)
+        {
+            currentHealth++;
+            healthText.text = $"Vides: {currentHealth}";
+            return true;
+        }
+        else
+        { return false; }
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        GameManager.instance.GameOver();
     }
 }

@@ -2,15 +2,15 @@ using UnityEngine;
 
 public class HealthPeach : MonoBehaviour
 {
-    PlayerHealth playerHealth;
+    BirdPhysics playerBird;
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        playerHealth = collision.GetComponent<PlayerHealth>();
+        playerBird = collision.GetComponent<BirdPhysics>();
 
-        if (playerHealth)
+        if (playerBird)
         {
-            if(playerHealth.Heal())
+            if(playerBird.Heal())
             {
                 Destroy(gameObject);
             }

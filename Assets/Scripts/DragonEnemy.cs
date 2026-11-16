@@ -12,7 +12,7 @@ public class DragonEnemy : MonoBehaviour
 
     bool activated = false;
 
-    PlayerHealth playerHealth;
+    BirdPhysics playerBird;
 
     void Start()
     {
@@ -35,11 +35,11 @@ public class DragonEnemy : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        playerHealth = collision.GetComponent<PlayerHealth>();
+        playerBird = collision.GetComponent<BirdPhysics>();
 
-        if (playerHealth)
+        if (playerBird)
         {
-            playerHealth.TakeDamage();
+            playerBird.TakeDamage();
         }
     }
 }
