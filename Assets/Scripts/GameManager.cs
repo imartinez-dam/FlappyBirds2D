@@ -33,7 +33,17 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     TMP_Text resultsText;
 
+    [SerializeField]
+    TMP_Text scoreText;
+
+    int score = 0;
     private AudioSource audioSource;
+
+    [SerializeField]
+    private AudioClip coinSound;
+    
+    [SerializeField]
+    private AudioClip gameOverSound;
 
     void Awake()
     {
@@ -56,6 +66,8 @@ public class GameManager : MonoBehaviour
             startPanel.SetActive(instance.isWaitingToStart);
 
             instance.resultsText = resultsText;
+            instance.scoreText = scoreText;
+            scoreText.text = $"Puntuació: {instance.score}";
 
             Destroy(gameObject);
         }
@@ -67,6 +79,11 @@ public class GameManager : MonoBehaviour
 
         exitButton.onClick.AddListener(instance.ReturnToStart);
     }
+
+    private void Start()
+    {
+        scoreText.text = $"Puntuació: {score}";
+    }
     public void GameOver()
     {
         if (isGameOver)
@@ -76,26 +93,27 @@ public class GameManager : MonoBehaviour
 
         isGameOver = true;
 
-        ScoreManager scoreManager = FindFirstObjectByType<ScoreManager>();
         ObstacleCounter obstacleCounter = FindFirstObjectByType<ObstacleCounter>();
         ScriptTimeText timeCounter = FindFirstObjectByType<ScriptTimeText>();
 
         int minuts = Mathf.FloorToInt(timeCounter.ElapsedTime / 60f);
         int segons = Mathf.FloorToInt(timeCounter.ElapsedTime % 60f);
 
-        resultsText.text = $"Monedes: {scoreManager.Score}\n" +
+        resultsText.text = $"Monedes: {score}\n" +
                             $"Obstacles superats: {obstacleCounter.ObstaclesPassed}\n" +
                             $"Temps: {minuts:00}:{segons:00}";
 
         gameOverPanel.SetActive(true);
-        audioSource.Play();
+        audioSource.PlayOneShot(gameOverSound);
         Time.timeScale = 0f;
     }
     public void RestartGame()
     {
+        audioSource.Stop();
         isGameOver = false;
         isWaitingToStart = false;
         Time.timeScale = 1f;
+        score = 0;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
@@ -108,4 +126,10 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0f;
     }
 
+    public void AddPoint()
+    {
+        score++;
+        scoreText.text = $"Puntuació: {score}";
+        audioSource.PlayOneShot(coinSound);
+    }
 }

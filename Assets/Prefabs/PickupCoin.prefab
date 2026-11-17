@@ -142,4 +142,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Pickups
   rotate: 1
-  rotationSpeed: 12
+  rotationSpeed: 25

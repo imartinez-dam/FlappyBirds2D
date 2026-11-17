@@ -77,7 +77,7 @@ El terra, el sostre i els obstacles comparteixen la capa `GroundPhysics`, amb le
 
 `Pickups.cs` comparteix la lògica de monedes i préssecs, diferenciats pels tags `coin` i `peach`. Identifica l'ocell amb el tag `Player` i consulta `BirdPhysics` per aplicar la curació.
 
-La rotació és opcional per prefab, utilitza `Time.deltaTime` i només s'executa durant la partida. `ScoreManager.cs` guarda la puntuació, actualitza el text i reprodueix el so de recollida des d'un objecte que no es destrueix amb la moneda.
+La rotació és opcional per prefab, utilitza `Time.deltaTime` i només s'executa durant la partida. En recollir una moneda, `Pickups.cs` crida `GameManager.instance.AddPoint()`. El `GameManager` guarda la puntuació, actualitza el marcador i reprodueix el so de recollida des d'un objecte que no es destrueix amb la moneda. Aquesta lògica està integrada al gestor de partida, sense un script `ScoreManager` separat.
 
 ### Dracs i animació
 
@@ -89,15 +89,17 @@ La rotació és opcional per prefab, utilitza `Time.deltaTime` i només s'execut
 
 `ScriptTimeText.cs` acumula temps amb `Time.deltaTime` i el mostra en minuts i segons. `GameManager.cs` gestiona els estats de partida, els panells i els botons. La pausa utilitza `Time.timeScale = 0`, juntament amb el bloqueig explícit dels controls.
 
-El gestor persisteix entre recàrregues amb `DontDestroyOnLoad`, elimina duplicats i reconnecta les referències de la interfície de cada escena. En morir, consulta els comptadors actuals per omplir el resum del Game Over. Actualment, vida, puntuació i temps es reinicialitzen amb els components de l'escena en començar una partida nova.
+El gestor persisteix entre recàrregues amb `DontDestroyOnLoad`, elimina duplicats i reconnecta les referències de la interfície de cada escena, inclòs el marcador de puntuació. En morir, combina la puntuació que guarda amb els comptadors d'obstacles i temps de l'escena per omplir el resum del Game Over. En començar una partida nova, `RestartGame()` posa explícitament la puntuació a zero; la vida, el temps i el recompte d'obstacles es reinicialitzen amb els components de l'escena.
 
 ### So
 
-Els efectes es reprodueixen amb `AudioSource.Play()`:
+Els efectes utilitzen components `AudioSource`:
 
-- `flap.mp3`: aleteig, des de l'ocell.
-- `coin.mp3`: recollida, des del gestor de puntuació.
-- `gameOver.mp3`: derrota, des del gestor de partida.
+- `flap.mp3`: aleteig, des de l'ocell amb `AudioSource.Play()`.
+- `coin.mp3`: recollida, des del `GameManager` amb `AudioSource.PlayOneShot(coinSound)`.
+- `gameOver.mp3`: derrota, des del mateix reproductor del `GameManager` amb `AudioSource.PlayOneShot(gameOverSound)`.
+
+El reproductor del gestor comparteix els dos efectes mitjançant referències `AudioClip`, sense necessitat de tenir un clip fix assignat a l'AudioSource. En prémer Reiniciar o Jugar, `RestartGame()` atura els sons amb `AudioSource.Stop()` abans de recarregar l'escena.
 
 ## Organització del projecte
 
