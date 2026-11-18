@@ -50,13 +50,21 @@ public class GameManager : MonoBehaviour
 
     // Nombre de monedes recollides durant la partida actual
     int score = 0;
+
+    // Nombre d'obstacles superats durant la partida actual
+    int obstaclesPassed = 0;
+
+    // Text del Canvas on es mostra el recompte d’obstacles superats
+    [SerializeField]
+    TMP_Text obstaclesText;
+
     // Font d’àudio del gestor que reprodueix els sons de recollida i de derrota
     private AudioSource audioSource;
 
     // Clip que sona quan el jugador recull una moneda
     [SerializeField]
     private AudioClip coinSound;
-    
+
     // Clip que sona quan acaba la partida
     [SerializeField]
     private AudioClip gameOverSound;
@@ -87,6 +95,9 @@ public class GameManager : MonoBehaviour
             instance.scoreText = scoreText;
             scoreText.text = $"Puntuació: {instance.score}";
 
+            instance.obstaclesText = obstaclesText;
+            obstaclesText.text = $"Obstacles: {instance.obstaclesPassed}";
+
             Destroy(gameObject);
         }
 
@@ -98,10 +109,11 @@ public class GameManager : MonoBehaviour
         exitButton.onClick.AddListener(instance.ReturnToStart);
     }
 
-    // Inicialitza el text de puntuació en la primera càrrega
+    // Inicialitza els marcadors de puntuació i obstacles en la primera càrrega
     private void Start()
     {
         scoreText.text = $"Puntuació: {score}";
+        obstaclesText.text = $"Obstacles: {obstaclesPassed}";
     }
     // Mostra les monedes, els obstacles superats i el temps abans de reproduir el so de derrota i pausar el joc
     public void GameOver()
@@ -113,8 +125,7 @@ public class GameManager : MonoBehaviour
 
         isGameOver = true;
 
-        // Consulta els comptadors de l’escena per obtenir els obstacles superats i el temps de partida
-        ObstacleCounter obstacleCounter = FindFirstObjectByType<ObstacleCounter>();
+        // Consulta el comptadors de temps de l’escena
         ScriptTimeText timeCounter = FindFirstObjectByType<ScriptTimeText>();
 
         // Separa els minuts complets dels segons restants per mostrar el temps en format MM:SS
@@ -122,7 +133,7 @@ public class GameManager : MonoBehaviour
         int segons = Mathf.FloorToInt(timeCounter.ElapsedTime % 60f);
 
         resultsText.text = $"Monedes: {score}\n" +
-                            $"Obstacles superats: {obstacleCounter.ObstaclesPassed}\n" +
+                            $"Obstacles superats: {obstaclesPassed}\n" +
                             $"Temps: {minuts:00}:{segons:00}";
 
         gameOverPanel.SetActive(true);
@@ -137,6 +148,7 @@ public class GameManager : MonoBehaviour
         isWaitingToStart = false;
         Time.timeScale = 1f;
         score = 0;
+        obstaclesPassed = 0;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
@@ -156,5 +168,12 @@ public class GameManager : MonoBehaviour
         score++;
         scoreText.text = $"Puntuació: {score}";
         audioSource.PlayOneShot(coinSound);
+    }
+
+    // Incrementa el recompte d'obstacles i actualitza el marcador
+    public void AddObstacle()
+    {
+        obstaclesPassed++;
+        obstaclesText.text = $"Obstacles: {obstaclesPassed}";
     }
 }

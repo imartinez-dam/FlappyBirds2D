@@ -516,51 +516,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 176492204}
   m_CullTransparentMesh: 1
---- !u!1 &292606572
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 292606574}
-  - component: {fileID: 292606573}
-  m_Layer: 0
-  m_Name: ObstacleCounter
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &292606573
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 292606572}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56fa783f1ce50004c87452a50486e198, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  obstaclesText: {fileID: 938549468}
---- !u!4 &292606574
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 292606572}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 352.8837, y: 227.02325, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &322584828
 GameObject:
   m_ObjectHideFlags: 0
@@ -1807,6 +1762,7 @@ MonoBehaviour:
   exitButton: {fileID: 1301919379}
   resultsText: {fileID: 2049614603}
   scoreText: {fileID: 478910838}
+  obstaclesText: {fileID: 938549468}
   coinSound: {fileID: 8300000, guid: 41db590856165504fb24af4fb0379c2b, type: 3}
   gameOverSound: {fileID: 8300000, guid: 4ff44b5e5d47c284785f150ae008d0c4, type: 3}
 --- !u!4 &673627031
@@ -3319,6 +3275,7 @@ MonoBehaviour:
   minObstacleSpacing: 8
   maxObstacleSpacing: 12
   peachChance: 0.15
+  rewardObstacleMargin: 2
 --- !u!4 &1669775588
 Transform:
   m_ObjectHideFlags: 0
@@ -3703,6 +3660,5 @@ SceneRoots:
   - {fileID: 322584833}
   - {fileID: 6750326}
   - {fileID: 745516905}
-  - {fileID: 292606574}
   - {fileID: 1669775588}
   - {fileID: 673627031}

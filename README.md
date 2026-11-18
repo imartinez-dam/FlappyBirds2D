@@ -69,7 +69,7 @@ Els controls de l'ocell i la rotació de les monedes queden bloquejats durant el
 
 `ScriptObstacle.cs` mou els obstacles verticalment sense gravetat i inverteix periòdicament la velocitat. Els superiors tenen un interval inicial configurat d'un segon per limitar quant baixen.
 
-Cada obstacle té **dos Box Collider 2D al mateix GameObject**: un físic i un trigger vertical amb offset X = 1 per comptar el pas. Un indicador intern impedeix comptar-lo més d'una vegada. `ObstacleCounter.cs` guarda el total i actualitza el marcador.
+Cada obstacle té **dos Box Collider 2D al mateix GameObject**. El collider sòlid detecta el xoc i el trigger vertical, desplaçat una unitat a la dreta, detecta el pas de l'ocell. `ScriptObstacle.cs` utilitza `counted` per registrar cada barrera una sola vegada i crida `GameManager.instance.AddObstacle()`. El gestor guarda el total i actualitza el marcador.
 
 El terra, el sostre i els obstacles comparteixen la capa `GroundPhysics`, amb les col·lisions entre aquesta capa desactivades perquè no es frenin entre ells.
 
@@ -89,7 +89,7 @@ La rotació és opcional per prefab, utilitza `Time.deltaTime` i només s'execut
 
 `ScriptTimeText.cs` acumula temps amb `Time.deltaTime` i el mostra en minuts i segons. `GameManager.cs` gestiona els estats de partida, els panells i els botons. La pausa utilitza `Time.timeScale = 0`, juntament amb el bloqueig explícit dels controls.
 
-El gestor persisteix entre recàrregues amb `DontDestroyOnLoad`, elimina duplicats i reconnecta les referències de la interfície de cada escena, inclòs el marcador de puntuació. En morir, combina la puntuació que guarda amb els comptadors d'obstacles i temps de l'escena per omplir el resum del Game Over. En començar una partida nova, `RestartGame()` posa explícitament la puntuació a zero; la vida, el temps i el recompte d'obstacles es reinicialitzen amb els components de l'escena.
+El gestor persisteix entre recàrregues amb `DontDestroyOnLoad`, elimina duplicats i torna a vincular els textos de la interfície, inclosos els marcadors de monedes i d'obstacles. Al Game Over, mostra els dos totals que guarda i el temps que consulta a `ScriptTimeText`. En començar una partida nova, `RestartGame()` posa a zero les monedes i els obstacles abans de recarregar l'escena. La recàrrega reinicialitza les vides i el temps.
 
 ### So
 

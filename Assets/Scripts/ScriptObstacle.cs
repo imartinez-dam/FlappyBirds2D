@@ -13,12 +13,10 @@ public class ScriptObstacle : MonoBehaviour
     // Rigidbody2D del prefab que controla el moviment de l’obstacle
     Rigidbody2D obstacleBody;
 
-    // Comptador de l’escena que registra els obstacles superats
-    ObstacleCounter obstacleCounter;
     // Indica si aquest obstacle ja s’ha comptat durant la partida
     bool counted = false;
 
-    // Inicialitza el cos físic i obté el comptador d’obstacles
+    // Inicialitza el cos físic i programa els canvis de sentit
     void Start()
     {
         // Assignem la velocitat inicial al Rigidbody2D de l’obstacle
@@ -27,8 +25,6 @@ public class ScriptObstacle : MonoBehaviour
 
         // Programa els canvis de sentit segons l’interval configurat
         InvokeRepeating("Reverse", timeBetweenReverse, timeBetweenReverse);
-
-        obstacleCounter = FindFirstObjectByType<ObstacleCounter>();
     }
     void Reverse()
     {
@@ -55,7 +51,7 @@ public class ScriptObstacle : MonoBehaviour
         if(!counted && collision.CompareTag("Player"))
         {
             counted = true;
-            obstacleCounter.AddObstacle();
+            GameManager.instance.AddObstacle();
         }
     }
 }
