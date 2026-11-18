@@ -49,7 +49,7 @@ public class ScriptObstacle : MonoBehaviour
             speed = Mathf.Abs(speed);   // Agafa el valor absolut que sempre és positiu
         }
     }
-    // Compta l’obstacle quan l’ocell entra al trigger de la dreta, que és independent del collider sòlid
+    // Compta una sola vegada el pas de l'ocell pel segon collider, configurat com a trigger
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(!counted && collision.CompareTag("Player"))

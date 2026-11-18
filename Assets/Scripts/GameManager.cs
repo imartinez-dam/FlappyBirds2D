@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     GameObject startPanel;
 
-    // Botó del menú inicial que inicia la partida recarregant MainScene
+    // Botó del menú inicial que inicia una partida nova recarregant l'escena activa
     [SerializeField]
     Button playButton;
 
@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
     // Permet consultar des d’altres scripts si la partida ha acabat
     public bool IsGameOver { get => isGameOver; }
 
-    // La partida està activa quan no es mostra el menú inicial ni s’ha produït un Game Over
+    // Indica si el joc no està en Game Over ni esperant per començar
     public bool IsPlaying { get => !isGameOver && !isWaitingToStart; }
 
     // Indica si el joc espera que el jugador premi el botó de jugar
@@ -98,6 +98,7 @@ public class GameManager : MonoBehaviour
         exitButton.onClick.AddListener(instance.ReturnToStart);
     }
 
+    // Inicialitza el text de puntuació en la primera càrrega
     private void Start()
     {
         scoreText.text = $"Puntuació: {score}";
@@ -128,7 +129,7 @@ public class GameManager : MonoBehaviour
         audioSource.PlayOneShot(gameOverSound);
         Time.timeScale = 0f;
     }
-    // Reinicia la puntuació i recarrega MainScene tant en jugar per primer cop com en reiniciar
+    // Inicia una partida nova recarregant l'escena activa
     public void RestartGame()
     {
         audioSource.Stop();

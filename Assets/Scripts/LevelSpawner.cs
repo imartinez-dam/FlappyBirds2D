@@ -42,11 +42,11 @@ public class LevelSpawner : MonoBehaviour
     [SerializeField]
     float maxY = 2f;
 
-    // Distància horitzontal mínima entre dos dracs consecutius
+    // Separació horitzontal mínima entre les posicions de generació de dos dracs consecutius
     [SerializeField]
     float minDragonSpacing = 15f;
 
-    // Distància horitzontal màxima entre dos dracs consecutius
+    // Separació horitzontal màxima entre les posicions de generació de dos dracs consecutius
     [SerializeField]
     float maxDragonSpacing = 25f;
 
@@ -58,7 +58,8 @@ public class LevelSpawner : MonoBehaviour
     [SerializeField]
     float maxObstacleSpacing = 12f;
 
-    // Probabilitat del 15% que un premi generat sigui un préssec, amb la primera moneda fixada a l’inici
+    // Probabilitat que un premi sigui un préssec: 15% per defecte, configurable a l'Inspector
+    // La primera recompensa és sempre una moneda
     [SerializeField]
     float peachChance = 0.15f;
 
@@ -72,6 +73,13 @@ public class LevelSpawner : MonoBehaviour
     Camera mainCamera;
     // Coordenada X on es generarà la propera moneda o el proper préssec
     float nextSpawnX;
+
+    // Separació horitzontal mínima entre una recompensa i el centre d'un obstacle
+    [SerializeField]
+    float rewardObstacleMargin = 2f;
+
+    // X de l'últim obstacle generat; infinit negatiu indica que encara no n'hi ha cap
+    float lastObstacleSpawnX = float.NegativeInfinity;
 
 
     // Calcula les posicions inicials de generació a partir de la càmera
@@ -94,14 +102,13 @@ public class LevelSpawner : MonoBehaviour
 
         Instantiate(coinPrefab, posicio, Quaternion.identity);
 
-        // Posició inicial de generació dels dracs
-
+        // Planifica la següent recompensa després de la moneda inicial
         nextSpawnX += Random.Range(minSpacing, maxSpacing);
 
+        // Posició inicial de generació dels dracs
         nextDragonSpawnX = rightLimitVisible + spawnMargin + Random.Range(3f, 6f);
 
         // Posició inicial de generació dels obstacles
-
         nextObstacleSpawnX = rightLimitVisible + spawnMargin + 4f;
     }
 
@@ -110,50 +117,6 @@ public class LevelSpawner : MonoBehaviour
     {
         // Coordenada X de la vora dreta visible de la càmera en aquest fotograma
         float rightLimitVisible = mainCamera.transform.position.x + mainCamera.orthographicSize * mainCamera.aspect;
-
-        // Monedes i préssecs
-
-        // Genera el següent premi quan la seva posició queda dins del marge de generació
-        if (rightLimitVisible + spawnMargin >= nextSpawnX)
-        {
-
-
-            // Altura aleatòria del premi dins del rang configurat
-            float rndHeight = Random.Range(minY, maxY);
-
-            // Posició del premi a partir de la coordenada X prevista i l’altura aleatòria
-            Vector3 posicio = new Vector3(nextSpawnX, rndHeight, 0);
-
-            // Prefab del premi que es crearà, que pot ser una moneda o un préssec
-            GameObject selectedPrefab;
-
-            // Tria un préssec segons la probabilitat configurada i genera una moneda en cas contrari
-            if (Random.value < peachChance)
-            {
-                selectedPrefab = peachPrefab;
-            }
-            else
-            {
-                selectedPrefab = coinPrefab;
-            }
-
-            Instantiate(selectedPrefab, posicio, Quaternion.identity);
-
-            // Avança la posició del següent premi una distància aleatòria dins dels límits configurats
-            nextSpawnX += Random.Range(minSpacing, maxSpacing);
-        }
-        // Dracs
-
-        // Genera el drac quan la seva posició queda dins del marge de generació
-        if (rightLimitVisible + spawnMargin >= nextDragonSpawnX)
-        {
-            // Posició del drac amb la coordenada X prevista i una altura aleatòria
-            Vector3 dragonPosition = new Vector3(nextDragonSpawnX, Random.Range(minY, maxY), 0);
-
-            Instantiate(dragonPrefab, dragonPosition, Quaternion.identity);
-
-            nextDragonSpawnX += Random.Range(minDragonSpacing, maxDragonSpacing);
-        }
 
         // Obstacles mòbils
 
@@ -185,7 +148,61 @@ public class LevelSpawner : MonoBehaviour
             // Configura el sentit inicial del moviment segons la posició de l’obstacle
             obstacleScript.SetDirection(isUpper);
 
+            // Recorda la posició de l'obstacle creat abans de planificar el següent
+            lastObstacleSpawnX = nextObstacleSpawnX;
+
             nextObstacleSpawnX += Random.Range(minObstacleSpacing, maxObstacleSpacing);
+        }
+
+        // Monedes i préssecs
+
+        // Genera el següent premi quan la seva posició queda dins del marge de generació
+        if (rightLimitVisible + spawnMargin >= nextSpawnX)
+        {
+            // Calcula la separació respecte de l'últim obstacle i del següent planificat
+            float distanceToLast = Mathf.Abs(nextSpawnX - lastObstacleSpawnX);
+            float distanceToNext = Mathf.Abs(nextSpawnX - nextObstacleSpawnX);
+
+            // Genera la recompensa només si respecta el marge amb tots dos obstacles
+            if (distanceToLast >= rewardObstacleMargin && distanceToNext >= rewardObstacleMargin)
+            {
+
+                // Altura aleatòria del premi dins del rang configurat
+                float rndHeight = Random.Range(minY, maxY);
+
+                // Posició del premi a partir de la coordenada X prevista i l’altura aleatòria
+                Vector3 posicio = new Vector3(nextSpawnX, rndHeight, 0);
+
+                // Prefab del premi que es crearà, que pot ser una moneda o un préssec
+                GameObject selectedPrefab;
+
+                // Tria un préssec segons la probabilitat configurada i genera una moneda en cas contrari
+                if (Random.value < peachChance)
+                {
+                    selectedPrefab = peachPrefab;
+                }
+                else
+                {
+                    selectedPrefab = coinPrefab;
+                }
+
+                Instantiate(selectedPrefab, posicio, Quaternion.identity);
+            }
+
+            // Avança la següent posició encara que s'hagi descartat la recompensa per proximitat
+            nextSpawnX += Random.Range(minSpacing, maxSpacing);
+        }
+        // Dracs
+
+        // Genera el drac quan la seva posició queda dins del marge de generació
+        if (rightLimitVisible + spawnMargin >= nextDragonSpawnX)
+        {
+            // Posició del drac amb la coordenada X prevista i una altura aleatòria
+            Vector3 dragonPosition = new Vector3(nextDragonSpawnX, Random.Range(minY, maxY), 0);
+
+            Instantiate(dragonPrefab, dragonPosition, Quaternion.identity);
+
+            nextDragonSpawnX += Random.Range(minDragonSpacing, maxDragonSpacing);
         }
     }
 }

@@ -7,7 +7,7 @@ public class ScriptTimeText : MonoBehaviour
     [SerializeField]
     TMP_Text timeText;
 
-    // Temps de joc acumulat en segons des que es carrega l’escena
+    // Temps de joc acumulat en segons, sense comptar les pauses
     float elapsedTime;
 
     // Acumula el temps transcorregut segons el temps de joc de cada fotograma
